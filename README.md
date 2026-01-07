@@ -150,6 +150,28 @@ Deleted key 'mykey'
 - Key not found: Returns error message and exit code 1
 - Connection failure: Returns error with server address and exit code 1
 
+### stats
+
+Display statistics from the memcached server.
+
+```bash
+mcache stats
+```
+
+**Example Output:**
+```
+Server: localhost:11211
+
+  bytes: 1234567
+  bytes_read: 9876543
+  bytes_written: 8765432
+  cmd_get: 12345
+  cmd_set: 6789
+  curr_connections: 5
+  curr_items: 42
+  ...
+```
+
 ## Examples
 
 ```bash
@@ -204,6 +226,12 @@ mcache delete mykey
 
 # Delete from a specific server
 mcache delete session:expired -s cache.example.com -p 11211
+
+# Show server statistics
+mcache stats
+
+# Stats from a specific server
+mcache stats -s cache.example.com -p 11211
 ```
 
 ## Building
@@ -239,7 +267,6 @@ Design principles:
 ## Future Commands
 
 Planned additions:
-- `stats` - Show server statistics
 - `flush` - Flush all keys
 
 ## License
