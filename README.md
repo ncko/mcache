@@ -133,6 +133,23 @@ mcache set <key> [value] [flags]
 Set key 'mykey' (24 bytes)
 ```
 
+### delete
+
+Delete a key from the memcached server.
+
+```bash
+mcache delete <key>
+```
+
+**Example Output:**
+```
+Deleted key 'mykey'
+```
+
+**Error Cases:**
+- Key not found: Returns error message and exit code 1
+- Connection failure: Returns error with server address and exit code 1
+
 ## Examples
 
 ```bash
@@ -181,6 +198,12 @@ echo '{"status": "ok"}' | mcache set api:health
 
 # Set on a specific server
 mcache set cache:data "value" -s cache.example.com -p 11211
+
+# Delete a key
+mcache delete mykey
+
+# Delete from a specific server
+mcache delete session:expired -s cache.example.com -p 11211
 ```
 
 ## Building
@@ -216,7 +239,6 @@ Design principles:
 ## Future Commands
 
 Planned additions:
-- `delete` - Delete a key
 - `stats` - Show server statistics
 - `flush` - Flush all keys
 
