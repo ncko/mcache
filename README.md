@@ -110,6 +110,29 @@ Value (binary data - 45678 bytes, showing hex):
 - Key not found: Returns error message and exit code 1
 - Connection failure: Returns error with server address and exit code 1
 
+### set
+
+Set a key-value pair in the memcached server.
+
+```bash
+mcache set <key> [value] [flags]
+```
+
+**Flags:**
+- `-e, --expiration` - Expiration time in seconds (0 = never expires, default: 0)
+- `-F, --flags` - Flags to store with the item (default: 0)
+- `-i, --input-file` - Read value from file
+
+**Value Sources (in priority order):**
+1. Command argument: `mcache set mykey "my value"`
+2. File: `mcache set mykey --input-file=data.txt`
+3. Stdin: `echo "my value" | mcache set mykey`
+
+**Example Output:**
+```
+Set key 'mykey' (24 bytes)
+```
+
 ## Examples
 
 ```bash
@@ -143,6 +166,21 @@ mcache get homepage_cache -s prod-cache-01.internal -p 11211
 
 # Get from remote server with custom port
 mcache get api:response:xyz --server=10.0.1.50 --port=11212
+
+# Set a simple value
+mcache set mykey "hello world"
+
+# Set with expiration (1 hour)
+mcache set session:token:abc "user123" --expiration=3600
+
+# Set from a file
+mcache set config:settings --input-file=settings.json
+
+# Set from stdin (pipe)
+echo '{"status": "ok"}' | mcache set api:health
+
+# Set on a specific server
+mcache set cache:data "value" -s cache.example.com -p 11211
 ```
 
 ## Building
@@ -178,7 +216,6 @@ Design principles:
 ## Future Commands
 
 Planned additions:
-- `set` - Set a key-value pair
 - `delete` - Delete a key
 - `stats` - Show server statistics
 - `flush` - Flush all keys
